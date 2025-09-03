@@ -1,2 +1,2 @@
-# Greeni---Proyecto-arqui-web
+# Greeni-Proyecto-arqui-web
 Grupo 06
