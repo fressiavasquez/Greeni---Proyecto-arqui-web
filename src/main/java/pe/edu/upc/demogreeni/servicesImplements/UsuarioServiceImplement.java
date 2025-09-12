@@ -22,4 +22,15 @@ public class UsuarioServiceImplement implements IUsuarioService {
     public void insert(Usuario usuario) {
         us.save(usuario);
     }
+
+    @Override
+    public Usuario listId(int id) {
+        return us.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(int id) {
+        us.deleteById(id);
+    }
+
 }
