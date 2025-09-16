@@ -1,0 +1,10 @@
+package pe.edu.upc.demogreeni.serviceinterfaces;
+
+import pe.edu.upc.demogreeni.entities.EstadoRecordatorio;
+
+import java.util.List;
+
+public interface IEstadoRecordatorioService {
+    public List<EstadoRecordatorio> listid();
+    public void insert(EstadoRecordatorio estadoRecordatorio);
+}
