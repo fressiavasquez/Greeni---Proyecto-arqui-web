@@ -5,53 +5,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.demogreeni.dtos.UsuarioDTO;
-import pe.edu.upc.demogreeni.entities.Usuario;
-import pe.edu.upc.demogreeni.servicesInterfaces.IUsuarioService;
+import pe.edu.upc.demogreeni.dtos.TratamientoDTO;
+import pe.edu.upc.demogreeni.entities.Tratamiento;
+import pe.edu.upc.demogreeni.servicesInterfaces.ITratamientoService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/usuarios")
-
-public class UsuarioController {
+@RequestMapping("/tratamiento")
+public class TratamientoController {
     @Autowired
-    private IUsuarioService us;
+    private ITratamientoService ta;
     @GetMapping
-    public List<UsuarioDTO> listar(){
-        return us.list().stream().map(y->{
+    public List<TratamientoDTO> listar(){
+        return ta.list().stream().map(y->{
             ModelMapper m = new ModelMapper();
-            return m.map(y,UsuarioDTO.class);
+            return m.map(y, TratamientoDTO.class);
         }).collect(Collectors.toList());
     }
     @PostMapping
-    public void insertar(@RequestBody UsuarioDTO dto)
+    public void insertar(@RequestBody TratamientoDTO dto)
     {
         ModelMapper m = new ModelMapper();
-        Usuario u=m.map(dto,Usuario.class);
-        us.insert(u);
+        Tratamiento t=m.map(dto,Tratamiento.class);
+        ta.insert(t);
     }
 
     @GetMapping({"/{id}"})
     public ResponseEntity<?> listar(@PathVariable("id") Integer id) {
-        Usuario usu = this.us.listId(id);
-        if (usu == null) {
+        Tratamiento tra = this.ta.listId(id);
+        if (tra == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un registro con el ID: " + id);
         } else {
             ModelMapper m = new ModelMapper();
-            Usuario u = (Usuario)m.map(usu, Usuario.class);
-            return ResponseEntity.ok(u);
+            Tratamiento ta = (Tratamiento) m.map(tra, Tratamiento.class);
+            return ResponseEntity.ok(ta);
         }
     }
 
     @DeleteMapping({"/{id}"})
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
-        Usuario u = this.us.listId(id);
-        if (u == null) {
+        Tratamiento trat = this.ta.listId(id);
+        if (trat == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un registro con el ID: " + id);
         } else {
-            this.us.delete(id);
+            this.ta.delete(id);
             return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
         }
     }
