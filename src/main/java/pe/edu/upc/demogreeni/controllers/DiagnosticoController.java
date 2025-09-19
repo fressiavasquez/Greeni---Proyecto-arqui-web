@@ -1,5 +1,6 @@
 package pe.edu.upc.demogreeni.controllers;
 
+import jdk.jshell.Diag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,28 @@ public class DiagnosticoController {
             ModelMapper m = new ModelMapper();
             return m.map(y, DiagnosticoDTO.class);
         }).collect(Collectors.toList());
+    }
+
+    @GetMapping({"/{id}"})
+    public ResponseEntity<?> listar(@PathVariable("id") Integer id) {
+        Diagnostico d = this.service.listId(id);
+        if (d == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un registro con el ID: " + id);
+        } else {
+            ModelMapper m = new ModelMapper();
+            Diagnostico dg = (Diagnostico) m.map(service, Diagnostico.class);
+            return ResponseEntity.ok(dg);
+        }
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
+        Diagnostico dgto = this.service.listId(id);
+        if (dgto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe un registro con el ID: " + id);
+        } else {
+            this.service.delete(id);
+            return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
+        }
     }
 }

@@ -23,4 +23,14 @@ public class DiagnosticoServiceImplement implements IDiagnosticoService {
     public void insert(Diagnostico diagnostico) {
         repository.save(diagnostico);
     }
+
+    @Override
+    public Diagnostico listId(int id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
 }
