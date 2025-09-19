@@ -1,0 +1,13 @@
+package pe.edu.upc.greeni.servicesInterfaces;
+
+import pe.edu.upc.greeni.entities.Guia;
+
+import java.util.List;
+
+public interface IGuiaService {
+    public List<Guia> list();
+    public void insert(Guia guia);
+    public void update(Guia guia);
+    public void delete(int id);
+    public Guia listId(int id);
+}

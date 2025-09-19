@@ -6,87 +6,87 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.RecordatorioDTO;
-import pe.edu.upc.greeni.dtos.UsuarioDTO;
-import pe.edu.upc.greeni.dtos.UsuarioDTOList;
 import pe.edu.upc.greeni.entities.Recordatorio;
-import pe.edu.upc.greeni.entities.Usuario;
-import pe.edu.upc.greeni.servicesInterfaces.IUsuarioService;
+import pe.edu.upc.greeni.servicesInterfaces.IRecordatorioService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/usuarios")//noombre en español
-public class UsuarioController {
+@RequestMapping("/recordatorio")
+public class RecordatorioController {
     @Autowired
-    private IUsuarioService us;
-    @GetMapping("/info")
-    public List<UsuarioDTOList> listar(){
-        return us.list().stream().map(y->{
+    private IRecordatorioService rR;
+
+    @GetMapping
+    public List<RecordatorioDTO> listar() {
+        return rR.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
-            return m.map(y,UsuarioDTOList.class);
+            return m.map(y, RecordatorioDTO.class);
         }).collect(Collectors.toList());
     }
 
-
     @PostMapping
-    public void insertar(@RequestBody UsuarioDTO dto)
+    public void insertar(@RequestBody RecordatorioDTO dto)
     {
         ModelMapper m = new ModelMapper();
-        Usuario u=m.map(dto,Usuario.class);
-        us.insert(u);
+        Recordatorio d = m.map(dto, Recordatorio.class);
+        rR.insert(d);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
-        Usuario usu = us.listId(id);
-        if (usu == null) {
+        Recordatorio dev = rR.listId(id);
+        if (dev == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
         ModelMapper m = new ModelMapper();
-        UsuarioDTO dto = m.map(usu, UsuarioDTO.class);
+        RecordatorioDTO dto = m.map(dev, RecordatorioDTO.class);
         return ResponseEntity.ok(dto);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
-        Usuario u = us.listId(id);
-        if (u == null) {
+        Recordatorio d = rR.listId(id);
+        if (d == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
-        us.delete(id);
+        rR.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<String> modificar(@RequestBody UsuarioDTO dto) {
-        ModelMapper m = new ModelMapper();
-        Usuario usu = m.map(dto, Usuario.class);
 
-        Usuario existente = us.listId(usu.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<String> modificar( @RequestBody RecordatorioDTO dto) {
+        ModelMapper m = new ModelMapper();
+        Recordatorio dev = m.map(dto, Recordatorio.class);
+
+        Recordatorio existente = rR.listId(dev.getIdRecordatorio());
         if (existente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se puede modificar. No existe un registro con el ID: " + usu.getId());
+                    .body("No se puede modificar. No existe un registro con el ID: " + dev.getIdRecordatorio());
         }
 
-        us.update(usu);
-        return ResponseEntity.ok("Registro con ID " + usu.getId() + " modificado correctamente.");
+        rR.update(dev);
+        return ResponseEntity.ok("Registro con ID " + dev.getIdRecordatorio() + " modificado correctamente.");
     }
 
     @GetMapping("/buscar")
     public ResponseEntity<?> buscar(@RequestParam String filtro) {
-        List<Usuario> usuarios = us.buscarPorNombreService(filtro);
+        List<Recordatorio> devices = rR.buscarService(filtro);
 
-        if (usuarios.isEmpty()) {
+        if (devices.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontraron usuarios con el nombre: " + filtro);
+                    .body("No se encontraron dispositivos del tipo: " + filtro);
         }
 
-        List<UsuarioDTO> listaDTO = usuarios.stream().map(x -> {
+        List<RecordatorioDTO> listaDTO = devices.stream().map(x -> {
             ModelMapper m = new ModelMapper();
-            return m.map(x, UsuarioDTO.class);
+            return m.map(x, RecordatorioDTO.class);
         }).collect(Collectors.toList());
+
         return ResponseEntity.ok(listaDTO);
     }
 }

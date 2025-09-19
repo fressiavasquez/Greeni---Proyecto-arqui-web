@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
-    @Query("select usu from Usuario usu where usu.nombre like %:nombre%")
-    public List<Usuario> buscarPorNombre(@Param("nombre")String nombre);
+    @Query("select u from Usuario u where u.nombre like %:nombre%")
+    public List<Usuario> buscarPorNombreService(@Param("nombre")String nombre);
 }

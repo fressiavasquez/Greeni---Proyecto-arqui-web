@@ -1,5 +1,7 @@
 package pe.edu.upc.greeni.dtos;
 
+import pe.edu.upc.greeni.entities.Rol;
+
 import java.time.LocalDate;
 
 public class UsuarioDTO {
@@ -11,6 +13,7 @@ public class UsuarioDTO {
     private LocalDate fechaIni;
     private String biografia;
     private boolean notificaciones;
+    private Rol rol;
 
     public int getId() {
         return id;
@@ -75,4 +78,13 @@ public class UsuarioDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
 }
