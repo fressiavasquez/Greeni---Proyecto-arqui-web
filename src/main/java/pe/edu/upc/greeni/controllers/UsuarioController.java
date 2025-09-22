@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.greeni.dtos.UsuarioDTO;
+import pe.edu.upc.greeni.dtos.*;
+import pe.edu.upc.greeni.entities.Recordatorio;
 import pe.edu.upc.greeni.entities.Usuario;
 import pe.edu.upc.greeni.servicesInterfaces.IUsuarioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +19,15 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     @Autowired
     private IUsuarioService us;
-    @GetMapping
-    public List<UsuarioDTO> listar(){
+    @GetMapping("/info")
+    public List<UsuarioDTOList> listar(){
         return us.list().stream().map(y->{
             ModelMapper m = new ModelMapper();
-            return m.map(y,UsuarioDTO.class);
+            return m.map(y,UsuarioDTOList.class);
         }).collect(Collectors.toList());
     }
+
+
     @PostMapping
     public void insertar(@RequestBody UsuarioDTO dto)
     {
@@ -31,6 +35,7 @@ public class UsuarioController {
         Usuario u=m.map(dto,Usuario.class);
         us.insert(u);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Usuario usu = us.listId(id);
@@ -53,21 +58,74 @@ public class UsuarioController {
         us.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody UsuarioDTO dto) {
         ModelMapper m = new ModelMapper();
         Usuario usu = m.map(dto, Usuario.class);
 
-        // Validación de existencia
         Usuario existente = us.listId(usu.getId());
         if (existente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No se puede modificar. No existe un registro con el ID: " + usu.getId());
         }
 
-        // Actualización si pasa validaciones
         us.update(usu);
         return ResponseEntity.ok("Registro con ID " + usu.getId() + " modificado correctamente.");
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<?> buscar(@RequestParam String filtro) {
+        List<Usuario> usuarios = us.buscarPorNombreService(filtro);
+
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron usuarios con el nombre: " + filtro);
+        }
+
+        List<UsuarioDTO> listaDTO = usuarios.stream().map(x -> {
+            ModelMapper m = new ModelMapper();
+            return m.map(x, UsuarioDTO.class);
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(listaDTO);
+    }
+
+    @GetMapping("/reporte-rol")
+    public ResponseEntity<?> obtenerCantidadUsuariosPorRol() {
+        List<UsuariosCantidadUsuariosDTO> listaDTO = new ArrayList<>();
+        List<String[]> fila = us.CantidadUsuariosPorRol();
+
+        if (fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron registros de usuarios por rol");
+        }
+
+        for (String[] s : fila) {
+            UsuariosCantidadUsuariosDTO dto = new UsuariosCantidadUsuariosDTO();
+            dto.setRol(s[0]);
+            dto.setCantidadUsuarios(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
+
+        return ResponseEntity.ok(listaDTO);
+    }
+
+    @GetMapping("/reporte-activo")
+    public ResponseEntity<?> obtenerUsuariosActivosPorMes() {
+        List<UsuariosActivosMesDTO> listaDTO = new ArrayList<>();
+        List<String[]> fila = us.UsuariosActivoporMes();
+
+        if (fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron registros de usuarios activos por mes");
+        }
+
+        for (String[] s : fila) {
+            UsuariosActivosMesDTO dto = new UsuariosActivosMesDTO();
+            dto.setMes(Integer.parseInt(s[0]));
+            dto.setCantidadUsuarios(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
+
+        return ResponseEntity.ok(listaDTO);
+    }
 }

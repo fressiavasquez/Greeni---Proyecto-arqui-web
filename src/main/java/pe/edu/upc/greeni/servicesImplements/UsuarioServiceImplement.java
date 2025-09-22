@@ -38,7 +38,19 @@ public class UsuarioServiceImplement implements IUsuarioService {
     }
 
     @Override
-    public List<Usuario> buscarPorNombre(String nombre) {
-        return us.buscarPorNombre(nombre);
+    public List<Usuario> buscarPorNombreService(String nombre) {
+        return us.buscarPorNombreService(nombre);
     }
+
+    @Override
+    public List<String[]> CantidadUsuariosPorRol() {
+        return  us.cantidadUsuariosPorRol();
+    }
+
+    @Override
+    public List<String[]> UsuariosActivoporMes() {
+        return us.usuariosActivosPorMes();
+    }
+
+
 }

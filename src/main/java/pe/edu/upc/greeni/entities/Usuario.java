@@ -32,6 +32,10 @@ public class Usuario{
     @Column(name ="notificaciones",nullable = false)
     private boolean notificaciones;
 
+    @ManyToOne
+    @JoinColumn(name="rolId")
+    private Rol rol;
+
     public Usuario(){}
 
     public Usuario(int id, String nombre, String email, String password, boolean activo, LocalDate fechaIni, String biografia, boolean notificaciones) {

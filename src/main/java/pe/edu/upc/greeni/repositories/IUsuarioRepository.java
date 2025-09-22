@@ -10,6 +10,26 @@ import java.util.List;
 @Repository
 
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
-    @Query("select usu from Usuario usu where usu.nombre like %:nombre%")
-    public List<Usuario> buscarPorNombre(@Param("nombre")String nombre);
+
+    @Query("select u from Usuario u where u.nombre like %:nombre%")
+    public List<Usuario> buscarPorNombreService(@Param("nombre")String nombre);
+
+    @Query(
+            value = "SELECT r.tipo AS rol, COUNT(u.id) AS cantidad_usuarios " +
+                    "FROM usuario u " +
+                    "INNER JOIN rol r ON u.rol_id = r.rol_id " +
+                    "GROUP BY r.tipo",
+            nativeQuery = true)
+    List<String[]> cantidadUsuariosPorRol();
+
+
+    @Query(value = "SELECT EXTRACT(MONTH FROM u.fecha_ini) AS mes, COUNT(u.id) AS cantidad_usuarios " +
+            "FROM usuario u " +
+            "WHERE u.activo = true " +
+            "AND EXTRACT(YEAR FROM u.fecha_ini) = EXTRACT(YEAR FROM CURRENT_DATE) " +
+            "GROUP BY EXTRACT(MONTH FROM u.fecha_ini) " +
+            "ORDER BY mes",
+            nativeQuery = true)
+    public List<String[]> usuariosActivosPorMes();
+
 }
