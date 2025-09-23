@@ -33,4 +33,9 @@ public class DiagnosticoServiceImplement implements IDiagnosticoService {
     public void delete(int id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public List<String[]> quantitySeveridadDiagnostico() {
+        return repository.quantitySeveridadDiagnostico();
+    }
 }

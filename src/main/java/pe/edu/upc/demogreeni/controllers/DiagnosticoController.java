@@ -7,9 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.demogreeni.dtos.DiagnosticoDTO;
+import pe.edu.upc.demogreeni.dtos.QuantityDTO;
+import pe.edu.upc.demogreeni.dtos.VencimientoDTO;
 import pe.edu.upc.demogreeni.entities.Diagnostico;
 import pe.edu.upc.demogreeni.servicesInterfaces.IDiagnosticoService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +30,7 @@ public class DiagnosticoController {
     }
 
     @GetMapping
-    public List<DiagnosticoDTO> listar()
-    {
+    public List<DiagnosticoDTO> listar() {
         return service.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
             return m.map(y, DiagnosticoDTO.class);
@@ -56,5 +58,23 @@ public class DiagnosticoController {
             this.service.delete(id);
             return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
         }
+    }
+
+    @GetMapping("/cantidadseveridad")
+    public ResponseEntity<?> cantidadSeveridad() {
+        List<QuantityDTO> listaDTO = new ArrayList<>();
+        List<String[]> fila = service.quantitySeveridadDiagnostico();
+
+        if (fila == null || fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron diagnósticos");
+        }
+        for (String[] s : fila) {
+            QuantityDTO dto = new QuantityDTO();
+            dto.setSeveridad(Integer.parseInt(s[0]));
+            dto.setQuantity(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
     }
 }

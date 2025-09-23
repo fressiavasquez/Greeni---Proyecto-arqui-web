@@ -34,4 +34,10 @@ public class TratamientoServiceImplement implements ITratamientoService {
     public void delete(int id) {
         ta.deleteById(id);
     }
+
+    @Override
+    public List<String[]> venceTratamiento() {
+        return ta.venceTratamiento();
+    }
+
 }

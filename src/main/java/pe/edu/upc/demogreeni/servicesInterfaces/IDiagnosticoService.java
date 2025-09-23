@@ -10,4 +10,5 @@ public interface IDiagnosticoService {
     public void insert(Diagnostico diagnostico);
     public Diagnostico listId(int id);
     public void delete(int id);
+    public List<String[]> quantitySeveridadDiagnostico();
 }

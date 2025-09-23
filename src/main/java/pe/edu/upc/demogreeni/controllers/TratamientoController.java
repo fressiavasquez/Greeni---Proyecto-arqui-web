@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.demogreeni.dtos.QuantityDTO;
 import pe.edu.upc.demogreeni.dtos.TratamientoDTO;
+import pe.edu.upc.demogreeni.dtos.VencimientoDTO;
 import pe.edu.upc.demogreeni.entities.Tratamiento;
 import pe.edu.upc.demogreeni.servicesInterfaces.ITratamientoService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +56,26 @@ public class TratamientoController {
             this.ta.delete(id);
             return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
         }
+    }
+
+    @GetMapping("/vencitrata")
+    public ResponseEntity<?> vencimientotrata() {
+        List<String[]> fila = ta.venceTratamiento();
+
+        if (fila == null || fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron vencimientos en los próximos 7 días");
+        }
+
+        List<VencimientoDTO> listaDTO = new ArrayList<>(fila.size());
+        for (String[] s : fila) {
+            VencimientoDTO dto = new VencimientoDTO();
+            dto.setId_tratamiento(Integer.parseInt(s[0]));
+            dto.setNombre(s[1]);
+            dto.setFechafin(java.time.LocalDate.parse(s[2]));
+            dto.setDias(Integer.parseInt(s[3]));
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
     }
 }
