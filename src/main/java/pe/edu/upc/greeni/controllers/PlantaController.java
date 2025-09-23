@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.PlantaDTO;
 import pe.edu.upc.greeni.entities.Planta;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/plantas")
+
 public class PlantaController {
     @Autowired
     private IPlantaService ps;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public List<PlantaDTO> listar(){
         return ps.list().stream().map(y->{
@@ -26,6 +29,7 @@ public class PlantaController {
             return m.map(y,PlantaDTO.class);
         }).collect(Collectors.toList());
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public void insertar(@RequestBody PlantaDTO dto)
     {
@@ -33,7 +37,7 @@ public class PlantaController {
         Planta d=m.map(dto,Planta.class);
         ps.insert(d);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Planta dev = ps.listId(id);
@@ -47,7 +51,7 @@ public class PlantaController {
         return ResponseEntity.ok(dto);
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Planta d = ps.listId(id);
@@ -58,7 +62,7 @@ public class PlantaController {
         ps.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody PlantaDTO dto) {
         ModelMapper m = new ModelMapper();

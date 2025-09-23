@@ -17,7 +17,7 @@ public class Usuario{
     @Column(name ="email",length = 100,nullable = false)
     private String email;
 
-    @Column(name ="password",length = 15,nullable = false)
+    @Column(name ="password",length = 200,nullable = false)
     private String password;
 
     @Column(name ="activo",nullable = false)
@@ -112,4 +112,14 @@ public class Usuario{
     public void setNotificaciones(boolean notificaciones) {
         this.notificaciones = notificaciones;
     }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+
 }
