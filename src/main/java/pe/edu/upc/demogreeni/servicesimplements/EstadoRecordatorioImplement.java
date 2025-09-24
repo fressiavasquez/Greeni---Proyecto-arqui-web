@@ -33,7 +33,7 @@ public class EstadoRecordatorioImplement implements IEstadoRecordatorioService {
     public void delete(int id) {erR.deleteById(id);}
 
     @Override
-    public List<String[]> cantidadRecordatoriosPorEstado() {
+    public List<Object[]> cantidadRecordatoriosPorEstado() {
         return erR.cantidadRecordatoriosPorEstado();
     }
 }

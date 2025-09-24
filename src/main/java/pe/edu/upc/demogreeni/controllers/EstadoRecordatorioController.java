@@ -62,7 +62,7 @@ public class EstadoRecordatorioController {
 
     @GetMapping("/cantidadporestado")
     public ResponseEntity<?> cantidadporestado() {
-        List<String[]> fila = erR.cantidadRecordatoriosPorEstado();
+        List<Object[]> fila = erR.cantidadRecordatoriosPorEstado();
 
         if (fila == null || fila.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -70,10 +70,10 @@ public class EstadoRecordatorioController {
         }
 
         List<CantidadRecordatorioPorEstadoDTO> listaDTO = new ArrayList<>(fila.size());
-        for (String[] s : fila) {
+        for (Object[] s : fila) {
             CantidadRecordatorioPorEstadoDTO dto = new CantidadRecordatorioPorEstadoDTO();
-            dto.setId(Integer.parseInt(s[0]));
-            dto.setNombre(s[1]);
+            dto.setEstado((String) s[0]); // primera columna: nombre del estado
+            dto.setCantidad(((Number) s[1]).longValue()); // segunda columna: cantidad
             listaDTO.add(dto);
         }
         return ResponseEntity.ok(listaDTO);

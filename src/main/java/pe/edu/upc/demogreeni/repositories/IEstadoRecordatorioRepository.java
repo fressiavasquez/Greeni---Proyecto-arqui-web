@@ -13,6 +13,6 @@ public interface IEstadoRecordatorioRepository extends JpaRepository<EstadoRecor
             "from recordatorio r\n" +
             "join estado_recordatorio e on r.id_estado_recordatorio = e.id_estado_recordatorio\n" +
             "group by e.nombre;\n", nativeQuery = true)
-    public List<String[]> cantidadRecordatoriosPorEstado();
+    public List<Object[]> cantidadRecordatoriosPorEstado();
 
 }

@@ -9,5 +9,5 @@ public interface IEstadoRecordatorioService {
     public void insert(EstadoRecordatorio estadoRecordatorio);
     public EstadoRecordatorio listid(int id);
     public void delete(int id);
-    public List<String[]> cantidadRecordatoriosPorEstado();
+    public List<Object[]> cantidadRecordatoriosPorEstado();
 }
