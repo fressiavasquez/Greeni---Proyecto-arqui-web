@@ -3,10 +3,12 @@ package pe.edu.upc.demogreeni.dtos;
 import pe.edu.upc.demogreeni.entities.EstadoRecordatorio;
 import pe.edu.upc.demogreeni.entities.Usuario;
 
+import java.time.LocalDate;
+
 public class RecordatorioDTO {
     private int idRecordatorio;
     private String nombre;
-    private String fechaRe;
+    private LocalDate fechaRe;
     private String tipo;
     private Usuario usuario;
     private EstadoRecordatorio estado;
@@ -27,11 +29,11 @@ public class RecordatorioDTO {
         this.nombre = nombre;
     }
 
-    public String getFechaRe() {
+    public LocalDate getFechaRe() {
         return fechaRe;
     }
 
-    public void setFechaRe(String fechaRe) {
+    public void setFechaRe(LocalDate fechaRe) {
         this.fechaRe = fechaRe;
     }
 

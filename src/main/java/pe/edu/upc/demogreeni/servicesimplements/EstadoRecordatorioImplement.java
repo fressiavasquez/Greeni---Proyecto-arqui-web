@@ -15,12 +15,25 @@ public class EstadoRecordatorioImplement implements IEstadoRecordatorioService {
 
 
     @Override
-    public List<EstadoRecordatorio> listid() {
+    public List<EstadoRecordatorio> list() {
         return erR.findAll();
     }
 
     @Override
     public void insert(EstadoRecordatorio estadoRecordatorio) {
         erR.save(estadoRecordatorio);
+    }
+
+    @Override
+    public EstadoRecordatorio listid(int id) {
+        return erR.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(int id) {erR.deleteById(id);}
+
+    @Override
+    public List<String[]> cantidadRecordatoriosPorEstado() {
+        return erR.cantidadRecordatoriosPorEstado();
     }
 }

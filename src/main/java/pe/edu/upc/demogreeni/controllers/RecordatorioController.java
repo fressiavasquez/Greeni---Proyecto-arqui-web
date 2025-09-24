@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.demogreeni.dtos.QuantityDTO;
 import pe.edu.upc.demogreeni.dtos.RecordatorioDTO;
 import pe.edu.upc.demogreeni.entities.Recordatorio;
 import pe.edu.upc.demogreeni.serviceinterfaces.IRecordatorioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,20 +76,21 @@ public class RecordatorioController {
         return ResponseEntity.ok("Registro con ID " + dev.getIdRecordatorio() + " modificado correctamente.");
     }
 
-    @GetMapping("/busquedas")
-    public ResponseEntity<?> buscar(@RequestParam String t) {
-        List<Recordatorio> devices = rR.buscarService(t);
+    @GetMapping("/cantidadtipo")
+    public ResponseEntity<?> cantidadTipoRecordatorio() {
+        List<QuantityDTO> listaDTO = new ArrayList<>();
+        List<String[]> fila = rR.quantityTipoRecordatorio();
 
-        if (devices.isEmpty()) {
+        if (fila == null || fila.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontraron dispositivos del tipo: " + t);
+                    .body("No se encontraron diagnósticos");
         }
-
-        List<RecordatorioDTO> listaDTO = devices.stream().map(x -> {
-            ModelMapper m = new ModelMapper();
-            return m.map(x, RecordatorioDTO.class);
-        }).collect(Collectors.toList());
-
+        for (String[] s : fila) {
+            QuantityDTO dto = new QuantityDTO();
+            dto.setTipo(s[0]);
+            dto.setQuantity(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
         return ResponseEntity.ok(listaDTO);
     }
 }

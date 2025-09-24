@@ -10,6 +10,9 @@ import java.util.List;
 
 @Repository
 public interface IRecordatorioRepository extends JpaRepository<Recordatorio,Integer> {
-    @Query("Select dev from Recordatorio  dev where dev.tipo like %:tipo%")
-    public List<Recordatorio> buscarR(@Param("tipo")String tipo);
+    @Query(value = "select tipo, count(*) as cantidad\n" +
+            "from recordatorio\n" +
+            "group by tipo\n" +
+            "order by tipo desc;\n", nativeQuery = true)
+    public List<String[]> quantityTipoRecordatorio();
 }

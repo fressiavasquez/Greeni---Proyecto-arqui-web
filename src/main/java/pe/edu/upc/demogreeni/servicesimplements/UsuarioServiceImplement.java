@@ -40,8 +40,4 @@ public class UsuarioServiceImplement implements IUsuarioService {
         us.save(usuario);
     }
 
-    @Override
-    public List<Usuario> buscarService(String nombre) {
-        return us.buscarR(nombre);
-    }
 }

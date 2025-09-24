@@ -40,7 +40,6 @@ public class RecordatorioServiceImplement implements IRecordatorioService {
     }
 
     @Override
-    public List<Recordatorio> buscarService(String tipo) {
-        return rR.buscarR(tipo);
+    public List<String[]> quantityTipoRecordatorio() {return rR.quantityTipoRecordatorio();
     }
 }

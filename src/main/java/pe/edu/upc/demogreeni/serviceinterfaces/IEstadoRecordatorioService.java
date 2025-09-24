@@ -5,6 +5,9 @@ import pe.edu.upc.demogreeni.entities.EstadoRecordatorio;
 import java.util.List;
 
 public interface IEstadoRecordatorioService {
-    public List<EstadoRecordatorio> listid();
+    public List<EstadoRecordatorio> list();
     public void insert(EstadoRecordatorio estadoRecordatorio);
+    public EstadoRecordatorio listid(int id);
+    public void delete(int id);
+    public List<String[]> cantidadRecordatoriosPorEstado();
 }

@@ -10,7 +10,6 @@ public interface IUsuarioService {
     public Usuario listId(int id);
     public void delete(int id);
     public void  update(Usuario usuario);
-    public List<Usuario> buscarService(String nombre);
 }
 
 

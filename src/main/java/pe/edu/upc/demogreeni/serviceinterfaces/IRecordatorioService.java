@@ -10,5 +10,5 @@ public interface IRecordatorioService {
     public Recordatorio listId(int id);
     public void delete(int id);
     public void update(Recordatorio recordatorio);
-    public List<Recordatorio> buscarService(String tipo);
+    public List<String[]> quantityTipoRecordatorio();
 }

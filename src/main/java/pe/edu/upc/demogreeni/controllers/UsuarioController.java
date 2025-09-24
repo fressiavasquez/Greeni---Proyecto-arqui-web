@@ -73,22 +73,5 @@ public class UsuarioController {
         return ResponseEntity.ok("Registro con ID " + dev.getId() + " modificado correctamente.");
     }
 
-    @GetMapping("/busquedas")
-    public ResponseEntity<?> buscar(@RequestParam String t) {
-        List<Usuario> devices = us.buscarService(t);
-
-        if (devices.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontraron dispositivos del tipo: " + t);
-        }
-
-        List<Usuario> listaDTO = devices.stream().map(x -> {
-            ModelMapper m = new ModelMapper();
-            return m.map(x, Usuario.class);
-        }).collect(Collectors.toList());
-
-        return ResponseEntity.ok(listaDTO);
-    }
-
 
 }
