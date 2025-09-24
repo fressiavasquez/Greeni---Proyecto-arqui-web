@@ -34,6 +34,11 @@ public class PlantaServiceImplement  implements IPlantaService {
     }
 
     @Override
+    public List<String[]> quantitynombrePlanta() {
+        return pr.quantitynombrePlanta();
+    }
+
+    @Override
     public void delete(int id) {
         pr.deleteById(id);
     }

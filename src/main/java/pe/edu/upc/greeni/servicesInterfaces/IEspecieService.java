@@ -10,4 +10,6 @@ public interface IEspecieService {
     public Especie listId(int id);
     public void delete(int id);
     public void update(Especie especie);
+    public List<String[]> quantityEspecie();
+
 }

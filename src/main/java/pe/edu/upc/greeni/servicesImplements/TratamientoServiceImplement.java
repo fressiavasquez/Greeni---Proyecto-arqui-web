@@ -49,4 +49,9 @@ public class TratamientoServiceImplement implements ITratamientoService {
     public List<Tratamiento> buscarDuracionMenor(int min) {
         return ta.findByDuracionLessThan(min);
     }
+
+    @Override
+    public List<String[]> venceTratamiento() {
+        return ta.venceTratamiento();
+    }
 }

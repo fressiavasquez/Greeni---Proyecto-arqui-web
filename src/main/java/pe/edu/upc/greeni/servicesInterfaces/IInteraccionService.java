@@ -9,4 +9,6 @@ public interface IInteraccionService {
     public void insert(Interaccion interaccion);
     Interaccion listId(int id);
     public void delete(int id);
+    public List<String[]>  ResumenInteracciones();
+    public  List<String[]> TopTiposInteraccion();
 }

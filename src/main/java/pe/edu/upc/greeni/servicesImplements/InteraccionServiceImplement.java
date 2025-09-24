@@ -27,4 +27,14 @@ public class InteraccionServiceImplement implements IInteraccionService {
 
     @Override
     public void delete(int id) { repositoryInteraccion.deleteById(id); }
+
+    @Override
+    public List<String[]> ResumenInteracciones() {
+        return repositoryInteraccion.ResumenInteracciones();
+    }
+
+    @Override
+    public List<String[]> TopTiposInteraccion() {
+        return repositoryInteraccion.TopTiposInteraccion();
+    }
 }

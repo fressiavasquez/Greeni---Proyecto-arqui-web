@@ -12,5 +12,6 @@ public interface IPlantaService {
     Planta listId(int id);
     void delete(int id);
     void update(Planta planta);
+    public List<String[]>quantitynombrePlanta();
 }
 

@@ -12,5 +12,5 @@ public interface ITratamientoService {
     public void  update(Tratamiento tratamiento);
     public List<Tratamiento> buscarDuracionMayor(int max);
     public List<Tratamiento> buscarDuracionMenor(int min);
-
+    public List<String[]> venceTratamiento();
 }

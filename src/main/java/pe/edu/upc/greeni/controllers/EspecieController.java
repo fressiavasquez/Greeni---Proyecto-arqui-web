@@ -4,11 +4,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.EspecieDTO;
+import pe.edu.upc.greeni.dtos.QuantityEspecieDTO;
 import pe.edu.upc.greeni.entities.Especie;
 import pe.edu.upc.greeni.servicesInterfaces.IEspecieService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,5 +71,26 @@ public class EspecieController {
         }
         es.update(dev);
         return ResponseEntity.ok("Registro con ID " + dev.getIdEspecie() + " modificado correctamente.");
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/cantidadespecie")
+    public ResponseEntity<?> ObtenerCantidad() {
+
+        List<QuantityEspecieDTO> listaDTO=new ArrayList<>();
+        List<String[]> fila =es.quantityEspecie();
+
+        if (fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron registros: ");
+        }
+        for (String[] s: fila)
+        {
+            QuantityEspecieDTO dto=new QuantityEspecieDTO();
+            dto.setIdEspecie(Integer.parseInt(s[0]));
+            dto.getQuantityEspecie(s[1]);
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
     }
 }

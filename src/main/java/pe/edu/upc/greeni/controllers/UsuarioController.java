@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.*;
 import pe.edu.upc.greeni.entities.Recordatorio;
@@ -89,6 +90,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listaDTO);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/reporte-rol")
     public ResponseEntity<?> obtenerCantidadUsuariosPorRol() {
         List<UsuariosCantidadUsuariosDTO> listaDTO = new ArrayList<>();
@@ -109,6 +111,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listaDTO);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/reporte-activo")
     public ResponseEntity<?> obtenerUsuariosActivosPorMes() {
         List<UsuariosActivosMesDTO> listaDTO = new ArrayList<>();

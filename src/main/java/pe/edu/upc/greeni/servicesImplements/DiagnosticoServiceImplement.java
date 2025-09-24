@@ -39,4 +39,9 @@ public class DiagnosticoServiceImplement implements IDiagnosticoService {
     public void update(Diagnostico diagnostico) {
         diagnosticoRepository.save(diagnostico);
     }
+
+    @Override
+    public List<String[]> quantitySeveridadDiagnostico() {
+        return diagnosticoRepository.quantitySeveridadDiagnostico();
+    }
 }

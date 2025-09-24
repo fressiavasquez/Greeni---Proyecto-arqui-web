@@ -11,4 +11,5 @@ public interface IDiagnosticoService {
     public Diagnostico listId(int id);
     public void delete(int id);
     public void update(Diagnostico diagnostico);
+    public List<String[]> quantitySeveridadDiagnostico();
 }

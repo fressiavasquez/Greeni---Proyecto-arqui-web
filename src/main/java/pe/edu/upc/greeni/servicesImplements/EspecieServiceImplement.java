@@ -39,4 +39,9 @@ public class EspecieServiceImplement implements IEspecieService {
     public void update(Especie especie) {
         especieRepository.save(especie);
     }
+
+    @Override
+    public List<String[]> quantityEspecie() {
+        return especieRepository.quantityEspecie();
+    }
 }

@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.PlantaDTO;
+import pe.edu.upc.greeni.dtos.QuantityPlantaDTO;
 import pe.edu.upc.greeni.entities.Planta;
 import pe.edu.upc.greeni.servicesInterfaces.IPlantaService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,4 +79,24 @@ public class PlantaController {
         return ResponseEntity.ok("Registro con ID " + dev.getIdPlanta() + " modificado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("plantareporte")
+    public ResponseEntity<?> ObtenerCantidad() {
+
+        List<QuantityPlantaDTO> listaDTO=new ArrayList<>();
+        List<String[]> fila =ps.quantitynombrePlanta();
+
+        if (fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron registros: ");
+        }
+        for (String[] s: fila)
+        {
+            QuantityPlantaDTO dto=new QuantityPlantaDTO();
+            dto.setNombrePlanta(s[0]);
+            dto.setQuantityPlanta(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
+    }
 }
