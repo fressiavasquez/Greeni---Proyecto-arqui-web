@@ -14,5 +14,5 @@ public interface IRecordatorioRepository extends JpaRepository<Recordatorio,Inte
             "from recordatorio\n" +
             "group by tipo\n" +
             "order by tipo desc;\n", nativeQuery = true)
-    public List<String[]> quantityTipoRecordatorio();
+    public List<String[]> quantityTipoRecordatorio(); //query
 }
