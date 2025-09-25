@@ -28,7 +28,7 @@ public class UsuarioController {
         }).collect(Collectors.toList());
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public void insertar(@RequestBody UsuarioDTO dto)
     {

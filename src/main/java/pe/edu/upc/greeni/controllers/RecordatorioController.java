@@ -4,11 +4,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.greeni.dtos.QuantityRecordatorioDTO;
 import pe.edu.upc.greeni.dtos.RecordatorioDTO;
 import pe.edu.upc.greeni.entities.Recordatorio;
 import pe.edu.upc.greeni.servicesInterfaces.IRecordatorioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,4 +92,23 @@ public class RecordatorioController {
 
         return ResponseEntity.ok(listaDTO);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/cantidadtipo")
+    public ResponseEntity<?> cantidadTipoRecordatorio() {
+        List<QuantityRecordatorioDTO> listaDTO = new ArrayList<>();
+        List<String[]> fila = rR.quantityTipoRecordatorio();
+
+        if (fila == null || fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron diagnósticos");
+        }
+        for (String[] s : fila) {
+            QuantityRecordatorioDTO dto = new QuantityRecordatorioDTO();
+            dto.setTipo(s[0]);
+            dto.setQuantity(Integer.parseInt(s[1]));
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
+    }
+
 }

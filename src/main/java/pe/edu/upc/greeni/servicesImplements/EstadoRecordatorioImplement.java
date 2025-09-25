@@ -41,5 +41,10 @@ public class EstadoRecordatorioImplement implements IEstadoRecordatorioService {
         return List.of();
     }
 
+    @Override
+    public List<Object[]> cantidadRecordatoriosPorEstado() {
+        return erR.cantidadRecordatoriosPorEstado();
+    }
+
 
 }

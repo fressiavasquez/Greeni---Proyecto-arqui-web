@@ -4,12 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.greeni.dtos.CantidadRecordatorioPorEstadoDTO;
 import pe.edu.upc.greeni.dtos.EstadoRecordatorioDTOInsert;
 import pe.edu.upc.greeni.dtos.EstadoRecordatorioDTOList;
 import pe.edu.upc.greeni.entities.EstadoRecordatorio;
 import pe.edu.upc.greeni.servicesInterfaces.IEstadoRecordatorioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +88,26 @@ public class EstadoRecordatorioController {
             return m.map(x, EstadoRecordatorioDTOList.class);
         }).collect(Collectors.toList());
 
+        return ResponseEntity.ok(listaDTO);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/cantidadporestado")
+    public ResponseEntity<?> cantidadporestado() {
+        List<Object[]> fila = estadoRecordatorioService.cantidadRecordatoriosPorEstado();
+
+        if (fila == null || fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron vencimientos en los próximos 7 días");
+        }
+
+        List<CantidadRecordatorioPorEstadoDTO> listaDTO = new ArrayList<>(fila.size());
+        for (Object[] s : fila) {
+            CantidadRecordatorioPorEstadoDTO dto = new CantidadRecordatorioPorEstadoDTO();
+            dto.setEstado((String) s[0]); // primera columna: nombre del estado
+            dto.setCantidad(((Number) s[1]).longValue()); // segunda columna: cantidad
+            listaDTO.add(dto);
+        }
         return ResponseEntity.ok(listaDTO);
     }
 }

@@ -11,4 +11,5 @@ public interface IEstadoRecordatorioService {
     public void delete(int id);
     public void update(EstadoRecordatorio estadoRecordatorio);
     public List<EstadoRecordatorio> buscarServiceER(String tipoER);
+    public List<Object[]> cantidadRecordatoriosPorEstado();
 }

@@ -1,6 +1,7 @@
 package pe.edu.upc.greeni.servicesImplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.greeni.entities.Usuario;
 import pe.edu.upc.greeni.repositories.IUsuarioRepository;
@@ -12,14 +13,18 @@ public class UsuarioServiceImplement implements IUsuarioService {
     @Autowired
     private IUsuarioRepository us;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<Usuario> list() {
         return us.findAll();
     }
 
     @Override
-    public void insert(Usuario usuario) {
-        us.save(usuario);
+    public void insert(Usuario u) {
+        u.setPassword(passwordEncoder.encode(u.getPassword()));
+        us.save(u);
     }
 
     @Override
