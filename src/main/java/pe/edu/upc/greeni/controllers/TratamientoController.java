@@ -58,6 +58,7 @@ public class TratamientoController {
             return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
         }
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping({"/{id}"})
     public ResponseEntity<String> modificar(@RequestBody TratamientoDTO dto) {
         ModelMapper m = new ModelMapper();

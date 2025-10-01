@@ -11,6 +11,10 @@ public interface IRecordatorioRepository extends JpaRepository<Recordatorio,Inte
     @Query("Select dev from Recordatorio  dev where dev.tipo like %:tipo%")
     public List<Recordatorio> buscarR(@Param("tipo")String tipo);
 
+    @Query("select r from Recordatorio r where r.usuario.id = :idUsuario")
+    public List<Recordatorio> filtrarRecordatoriosPorUsuario(@Param("idUsuario") int  idUsuario);
+
+
     @Query(value = "select tipo, count(*) as cantidad\n" +
             "from recordatorio\n" +
             "group by tipo\n" +

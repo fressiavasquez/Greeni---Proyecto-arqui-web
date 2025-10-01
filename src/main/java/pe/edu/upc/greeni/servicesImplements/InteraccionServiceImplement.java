@@ -37,4 +37,8 @@ public class InteraccionServiceImplement implements IInteraccionService {
     public List<String[]> TopTiposInteraccion() {
         return repositoryInteraccion.TopTiposInteraccion();
     }
+
+
+
+
 }

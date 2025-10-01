@@ -37,6 +37,7 @@ public class InteraccionController {
         service.insert(i);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Interaccion inte = service.listId(id);
@@ -107,4 +108,7 @@ public class InteraccionController {
 
         return ResponseEntity.ok(listaDTO);
     }
+
+
+
 }

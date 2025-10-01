@@ -39,6 +39,11 @@ public class PlantaServiceImplement  implements IPlantaService {
     }
 
     @Override
+    public List<String[]> getPlantasMax() {
+        return  pr.getPlantasMax();
+    }
+
+    @Override
     public void delete(int id) {
         pr.deleteById(id);
     }

@@ -4,9 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.GuiaDTO;
 import pe.edu.upc.greeni.dtos.GuiaDTOList;
+import pe.edu.upc.greeni.dtos.TipoGuiaDTO;
+import pe.edu.upc.greeni.dtos.TituloGuiaDTO;
 import pe.edu.upc.greeni.entities.Guia;
 import pe.edu.upc.greeni.servicesInterfaces.IGuiaService;
 
@@ -57,5 +60,40 @@ public class GuiaController {
         }
         guiaService.update(guia);
         return ResponseEntity.ok("Registro con ID " + guia.getGuiaId() + " modificado correctamente.");
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/filtro-tipo")
+    public ResponseEntity<?> filtrarPorTipo(@RequestParam String tipo) {
+        List<Guia> lista = guiaService.buscarPorTipo(tipo);
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron guías del tipo: " + tipo);
+        }
+
+        List<TituloGuiaDTO> listaDTO = lista.stream().map(g -> {
+            ModelMapper m = new ModelMapper();
+            return m.map(g, TituloGuiaDTO.class);
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(listaDTO);
+    }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/filtro-titulo")
+    public ResponseEntity<?> filtrarPorTitulo(@RequestParam String titulo) {
+        List<Guia> lista = guiaService.buscarPorTitulo(titulo);
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron guías del tipo: " + titulo);
+        }
+
+        List<TipoGuiaDTO> listaDTO = lista.stream().map(g -> {
+            ModelMapper m = new ModelMapper();
+            return m.map(g, TipoGuiaDTO.class);
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(listaDTO);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.QuantityRecordatorioDTO;
 import pe.edu.upc.greeni.dtos.RecordatorioDTO;
+import pe.edu.upc.greeni.dtos.RecordatorioFiltroDTO;
 import pe.edu.upc.greeni.entities.Recordatorio;
 import pe.edu.upc.greeni.servicesInterfaces.IRecordatorioService;
 
@@ -92,6 +93,7 @@ public class RecordatorioController {
 
         return ResponseEntity.ok(listaDTO);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/cantidadtipo")
     public ResponseEntity<?> cantidadTipoRecordatorio() {
@@ -108,6 +110,23 @@ public class RecordatorioController {
             dto.setQuantity(Integer.parseInt(s[1]));
             listaDTO.add(dto);
         }
+        return ResponseEntity.ok(listaDTO);
+    }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/filtropor-usuario")
+    public ResponseEntity<?> filtrarRecordatoriosPorUsuario(@RequestParam int idUsuario) {
+        List<Recordatorio> recordatorios = rR.filtrarRecordatoriosPorUsuarioService(idUsuario);
+
+        if (recordatorios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron recordatorios para el usuario con ID: " + idUsuario);
+        }
+
+        List<RecordatorioFiltroDTO> listaDTO = recordatorios.stream().map(r -> {
+            ModelMapper m = new ModelMapper();
+            return m.map(r, RecordatorioFiltroDTO.class);
+        }).collect(Collectors.toList());
+
         return ResponseEntity.ok(listaDTO);
     }
 

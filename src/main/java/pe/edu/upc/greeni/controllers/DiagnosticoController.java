@@ -37,6 +37,7 @@ public class DiagnosticoController {
                 return m.map(y, DiagnosticoDTO.class);
             }).collect(Collectors.toList());
         }
+
     @GetMapping({"/{id}"})
     public ResponseEntity<?> listar(@PathVariable("id") Integer id) {
         Diagnostico d = this.service.listId(id);

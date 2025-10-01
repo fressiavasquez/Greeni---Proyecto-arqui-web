@@ -38,4 +38,18 @@ public class GuiaServiceImplement  implements IGuiaService {
     public Guia listId(int id) {
         return repositoryGuia.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Guia> buscarPorTipo(String tipo) {
+        return repositoryGuia.findByTipo(tipo);
+    }
+
+    @Override
+    public List<Guia> buscarPorTitulo(String titulo) {
+        return repositoryGuia.findByTituloContaining(titulo);
+    }
+
+
+
+
 }

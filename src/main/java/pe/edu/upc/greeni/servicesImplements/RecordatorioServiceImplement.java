@@ -48,4 +48,11 @@ public class RecordatorioServiceImplement  implements IRecordatorioService {
     public List<String[]> quantityTipoRecordatorio() {
         return rR.quantityTipoRecordatorio();
     }
+
+    @Override
+    public List<Recordatorio> filtrarRecordatoriosPorUsuarioService(int id) {
+        return rR.filtrarRecordatoriosPorUsuario(id);
+    }
+
+
 }

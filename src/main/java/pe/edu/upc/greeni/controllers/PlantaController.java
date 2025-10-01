@@ -8,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.PlantaDTO;
+import pe.edu.upc.greeni.dtos.PlantaMaxDTO;
 import pe.edu.upc.greeni.dtos.QuantityPlantaDTO;
 import pe.edu.upc.greeni.entities.Planta;
 import pe.edu.upc.greeni.servicesInterfaces.IPlantaService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,4 +101,26 @@ public class PlantaController {
         }
         return ResponseEntity.ok(listaDTO);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/max")
+    public ResponseEntity<?> ObtenerMax() {
+
+        List<PlantaMaxDTO> listaDTO =new ArrayList<>();
+        List<String[]> fila =ps.getPlantasMax();
+
+        if (fila.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron registros: ");
+        }
+        for (String[] s: fila)
+        {
+            PlantaMaxDTO dto=new PlantaMaxDTO();
+            dto.setNombrePlanta(s[0]);
+            dto.setFecha_reg(LocalDate.parse(s[1]));
+            listaDTO.add(dto);
+        }
+        return ResponseEntity.ok(listaDTO);
+    }
+
 }

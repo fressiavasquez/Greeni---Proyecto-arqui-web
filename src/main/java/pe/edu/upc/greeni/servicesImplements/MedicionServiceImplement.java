@@ -42,4 +42,8 @@ public class MedicionServiceImplement implements IMedicionService {
     public List<Medicion> buscarPorTemperatura(String temp) {
         return medicionRepository.buscarPorTemperatura(temp);
     }
+
+
+
+
 }

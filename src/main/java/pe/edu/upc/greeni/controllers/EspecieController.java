@@ -88,7 +88,7 @@ public class EspecieController {
         {
             QuantityEspecieDTO dto=new QuantityEspecieDTO();
             dto.setIdEspecie(Integer.parseInt(s[0]));
-            dto.getQuantityEspecie(s[1]);
+            dto.setQuantityEspecie(Integer.parseInt(s[1]));
             listaDTO.add(dto);
         }
         return ResponseEntity.ok(listaDTO);

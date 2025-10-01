@@ -1,18 +1,18 @@
 package pe.edu.upc.greeni.dtos;
 
 public class QuantityEspecieDTO {
-    private int IdEspecie;
+    private int idEspecie;
     private int quantityEspecie;
 
     public int getIdEspecie() {
-        return IdEspecie;
+        return idEspecie;
     }
 
     public void setIdEspecie(int idEspecie) {
-        IdEspecie = idEspecie;
+        this.idEspecie = idEspecie;
     }
 
-    public int getQuantityEspecie(String s) {
+    public int getQuantityEspecie() {
         return quantityEspecie;
     }
 

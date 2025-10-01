@@ -10,6 +10,10 @@ import java.util.List;
 public interface IMedicionRepository extends JpaRepository<Medicion, Integer> {
         @Query("SELECT m FROM Medicion m WHERE m.Temperatura LIKE %:temp%")
         List<Medicion> buscarPorTemperatura(@Param("temp") String temp);
-    }
+
+
+
+
+}
 
 

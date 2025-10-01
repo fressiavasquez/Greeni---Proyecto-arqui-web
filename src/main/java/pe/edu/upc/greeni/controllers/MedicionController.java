@@ -4,9 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.MedicionDTOInsert;
 import pe.edu.upc.greeni.dtos.MedicionDTOList;
+import pe.edu.upc.greeni.dtos.MedicionReporteListDTO;
 import pe.edu.upc.greeni.entities.Medicion;
 import pe.edu.upc.greeni.servicesInterfaces.IMedicionService;
 
@@ -60,6 +62,7 @@ public class MedicionController {
         return ResponseEntity.ok("Registro con ID " + dev.getIdMedicion() + " modificado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarPorTemperatura(@RequestParam String temp) {
         List<Medicion> lista = service.buscarPorTemperatura(temp);
@@ -69,11 +72,14 @@ public class MedicionController {
                     .body("No se encontraron mediciones con temperatura: " + temp);
         }
 
-        List<MedicionDTOList> listaDTO = lista.stream().map(x -> {
+        List<MedicionReporteListDTO> listaDTO = lista.stream().map(x -> {
             ModelMapper m = new ModelMapper();
-            return m.map(x, MedicionDTOList.class);
+            return m.map(x, MedicionReporteListDTO.class);
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(listaDTO);
     }
+
+
+
 }
