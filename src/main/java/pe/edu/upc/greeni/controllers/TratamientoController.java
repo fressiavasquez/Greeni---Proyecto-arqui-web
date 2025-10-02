@@ -21,6 +21,7 @@ public class TratamientoController {
     @Autowired
     private ITratamientoService ta;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping
     public List<TratamientoDTO> listar(){
         return ta.list().stream().map(y->{
@@ -28,6 +29,7 @@ public class TratamientoController {
             return m.map(y, TratamientoDTO.class);
         }).collect(Collectors.toList());
     }
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody TratamientoDTO dto)
     {
@@ -35,7 +37,7 @@ public class TratamientoController {
         Tratamiento t=m.map(dto,Tratamiento.class);
         ta.insert(t);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping({"/{id}"})
     public ResponseEntity<?> listar(@PathVariable("id") Integer id) {
         Tratamiento tra = this.ta.listId(id);
@@ -47,7 +49,7 @@ public class TratamientoController {
             return ResponseEntity.ok(ta);
         }
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping({"/{id}"})
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Tratamiento trat = this.ta.listId(id);
@@ -58,7 +60,8 @@ public class TratamientoController {
             return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
         }
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PutMapping({"/{id}"})
     public ResponseEntity<String> modificar(@RequestBody TratamientoDTO dto) {
         ModelMapper m = new ModelMapper();
@@ -69,14 +72,11 @@ public class TratamientoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No se puede modificar. No existe un registro con el ID: " + tra.getIdTratamiento());
         }
-
-        // Actualización si pasa validaciones
         ta.update(tra);
         return ResponseEntity.ok("Registro con ID " + tra.getIdTratamiento() + " modificado correctamente.");
     }
 
-
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/buscarmax")
     public ResponseEntity<?> buscarDuracionMayor(@RequestParam int max) {
             List<Tratamiento> lista = ta.buscarDuracionMayor(max);
@@ -94,6 +94,7 @@ public class TratamientoController {
             return ResponseEntity.ok(listaDTO);
         }
 
+        @PreAuthorize("hasAuthority('ADMIN')")
         @GetMapping("/buscarmin")
         public ResponseEntity<?> buscarDuracionMenor(@RequestParam int min) {
             List<Tratamiento> lista = ta.buscarDuracionMenor(min);

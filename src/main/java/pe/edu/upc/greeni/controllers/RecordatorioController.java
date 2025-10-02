@@ -22,6 +22,7 @@ public class RecordatorioController {
     @Autowired
     private IRecordatorioService rR;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping
     public List<RecordatorioDTO> listar() {
         return rR.list().stream().map(y -> {
@@ -30,6 +31,7 @@ public class RecordatorioController {
         }).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PostMapping
     public void insertar(@RequestBody RecordatorioDTO dto)
     {
@@ -38,6 +40,7 @@ public class RecordatorioController {
         rR.insert(d);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Recordatorio dev = rR.listId(id);
@@ -51,6 +54,7 @@ public class RecordatorioController {
         return ResponseEntity.ok(dto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Recordatorio d = rR.listId(id);
@@ -62,6 +66,7 @@ public class RecordatorioController {
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar( @RequestBody RecordatorioDTO dto) {
         ModelMapper m = new ModelMapper();
@@ -77,6 +82,7 @@ public class RecordatorioController {
         return ResponseEntity.ok("Registro con ID " + dev.getIdRecordatorio() + " modificado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/buscar")
     public ResponseEntity<?> buscar(@RequestParam String filtro) {
         List<Recordatorio> devices = rR.buscarService(filtro);

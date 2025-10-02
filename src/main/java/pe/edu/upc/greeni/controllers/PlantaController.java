@@ -25,7 +25,7 @@ public class PlantaController {
     @Autowired
     private IPlantaService ps;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')or hasAuthority('PLANTLOVER') ")
     @GetMapping
     public List<PlantaDTO> listar(){
         return ps.list().stream().map(y->{
@@ -33,7 +33,7 @@ public class PlantaController {
             return m.map(y,PlantaDTO.class);
         }).collect(Collectors.toList());
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody PlantaDTO dto)
     {
@@ -41,7 +41,7 @@ public class PlantaController {
         Planta d=m.map(dto,Planta.class);
         ps.insert(d);
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Planta dev = ps.listId(id);
@@ -55,7 +55,7 @@ public class PlantaController {
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Planta d = ps.listId(id);
@@ -63,10 +63,11 @@ public class PlantaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
+
         ps.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody PlantaDTO dto) {
         ModelMapper m = new ModelMapper();

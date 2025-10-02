@@ -21,6 +21,7 @@ public class MedicionController {
     @Autowired
     private IMedicionService service;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody MedicionDTOInsert sdto)
     {
@@ -29,6 +30,7 @@ public class MedicionController {
         service.insert(s);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')or hasAuthority('PLANTLOVER') ")
     @GetMapping
     public List<MedicionDTOList> listar(){
         return service.list().stream().map(y->{
@@ -37,6 +39,7 @@ public class MedicionController {
         }).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Medicion d = service.listId(id);
@@ -44,10 +47,12 @@ public class MedicionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
+
         service.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody MedicionDTOInsert dto) {
         ModelMapper m = new ModelMapper();
@@ -61,6 +66,7 @@ public class MedicionController {
         service.update(dev);
         return ResponseEntity.ok("Registro con ID " + dev.getIdMedicion() + " modificado correctamente.");
     }
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/buscar")

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     @Autowired
     private IUsuarioService us;
+    @PreAuthorize("hasAuthority('ADMIN')or hasAuthority('PLANTLOVER')or hasAuthority('CIENTIFICO') ")
     @GetMapping("/info")
     public List<UsuarioDTOList> listar(){
         return us.list().stream().map(y->{
@@ -28,7 +29,7 @@ public class UsuarioController {
         }).collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')or hasAuthority('PLANTLOVER')or hasAuthority('CIENTIFICO') ")
     @PostMapping
     public void insertar(@RequestBody UsuarioDTO dto)
     {
@@ -37,6 +38,7 @@ public class UsuarioController {
         us.insert(u);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')or hasAuthority('PLANTLOVER')or hasAuthority('CIENTIFICO') ")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Usuario usu = us.listId(id);
@@ -49,6 +51,7 @@ public class UsuarioController {
         UsuarioDTO dto = m.map(usu, UsuarioDTO.class);
         return ResponseEntity.ok(dto);
     }
+    @PreAuthorize("hasAuthority('ADMIN')or hasAuthority('PLANTLOVER')or hasAuthority('CIENTIFICO') ")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Usuario u = us.listId(id);
@@ -56,9 +59,11 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
+
         us.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
+    @PreAuthorize("hasAuthority('ADMIN')or hasAuthority('PLANTLOVER')or hasAuthority('CIENTIFICO') ")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody UsuarioDTO dto) {
         ModelMapper m = new ModelMapper();
@@ -73,7 +78,7 @@ public class UsuarioController {
         us.update(usu);
         return ResponseEntity.ok("Registro con ID " + usu.getId() + " modificado correctamente.");
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/buscar")
     public ResponseEntity<?> buscar(@RequestParam String filtro) {
         List<Usuario> usuarios = us.buscarPorNombreService(filtro);

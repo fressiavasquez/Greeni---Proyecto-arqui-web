@@ -15,5 +15,6 @@ public interface IPlantaService {
     void update(Planta planta);
     public List<String[]>quantitynombrePlanta();
     public List<String[]> getPlantasMax();
+
 }
 

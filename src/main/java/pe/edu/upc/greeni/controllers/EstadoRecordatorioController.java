@@ -22,6 +22,7 @@ public class EstadoRecordatorioController {
     @Autowired
     private IEstadoRecordatorioService estadoRecordatorioService;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PostMapping
     public void insertar(@RequestBody EstadoRecordatorioDTOInsert sdto) {
         ModelMapper m = new ModelMapper();
@@ -29,6 +30,7 @@ public class EstadoRecordatorioController {
         estadoRecordatorioService.insert(s);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping
     public List<EstadoRecordatorioDTOList> listar() {
         return estadoRecordatorioService.listid().stream().map(y -> {
@@ -36,6 +38,7 @@ public class EstadoRecordatorioController {
             return m.map(y, EstadoRecordatorioDTOList.class);
         }).collect(Collectors.toList());
     }
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         EstadoRecordatorio dev = estadoRecordatorioService.listId(id);
@@ -49,7 +52,7 @@ public class EstadoRecordatorioController {
         return ResponseEntity.ok(dto);
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         EstadoRecordatorio d = estadoRecordatorioService.listId(id);
@@ -61,6 +64,7 @@ public class EstadoRecordatorioController {
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody EstadoRecordatorioDTOList dto) {
         ModelMapper m = new ModelMapper();
@@ -74,6 +78,7 @@ public class EstadoRecordatorioController {
         estadoRecordatorioService.update(dev);
         return ResponseEntity.ok("Registro con ID " + dev.getIdEstadoRecordatorio() + " modificado correctamente.");
     }
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping("/busquedas")
     public ResponseEntity<?> buscar(@RequestParam String t) {
         List<EstadoRecordatorio> devices = estadoRecordatorioService.buscarServiceER(t);
@@ -91,7 +96,7 @@ public class EstadoRecordatorioController {
         return ResponseEntity.ok(listaDTO);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping("/cantidadporestado")
     public ResponseEntity<?> cantidadporestado() {
         List<Object[]> fila = estadoRecordatorioService.cantidadRecordatoriosPorEstado();

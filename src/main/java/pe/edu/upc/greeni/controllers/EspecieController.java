@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 public class EspecieController {
     @Autowired
     private IEspecieService es;
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER') or hasAuthority('CIENTIFICO')")
     @GetMapping
     public List<EspecieDTO> listar(){
         return es.list().stream().map(y->{
@@ -27,7 +29,7 @@ public class EspecieController {
             return m.map(y,EspecieDTO.class);
         }).collect(Collectors.toList());
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody EspecieDTO dto)
     {
@@ -35,6 +37,7 @@ public class EspecieController {
         Especie r =m.map(dto, Especie.class);
         es.insert(r);
     }
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Especie dev = es.listId(id);
@@ -47,7 +50,7 @@ public class EspecieController {
         EspecieDTO dto = m.map(dev, EspecieDTO.class);
         return ResponseEntity.ok(dto);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarEspecie(@PathVariable("id") Integer id) {
         Especie d = es.listId(id);
@@ -55,10 +58,11 @@ public class EspecieController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No existe un registro con el ID: " + id);
         }
+
         es.delete(id);
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificarEspecie(@RequestBody EspecieDTO dto) {
         ModelMapper m = new ModelMapper();
@@ -73,7 +77,7 @@ public class EspecieController {
         return ResponseEntity.ok("Registro con ID " + dev.getIdEspecie() + " modificado correctamente.");
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping("/cantidadespecie")
     public ResponseEntity<?> ObtenerCantidad() {
 

@@ -43,6 +43,7 @@ public class PlantaServiceImplement  implements IPlantaService {
         return  pr.getPlantasMax();
     }
 
+
     @Override
     public void delete(int id) {
         pr.deleteById(id);

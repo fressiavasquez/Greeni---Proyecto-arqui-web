@@ -8,6 +8,7 @@ import pe.edu.upc.greeni.entities.Diagnostico;
 import java.util.List;
 
 public interface IDiagnosticoRepository extends JpaRepository<Diagnostico,Integer> {
+
     @Query(value = "SELECT severidad, COUNT(*) AS cantidad\n" +
             "FROM diagnostico\n" +
             "GROUP BY severidad\n" +

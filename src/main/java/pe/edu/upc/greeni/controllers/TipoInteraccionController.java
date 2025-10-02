@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.RecordatorioDTO;
 import pe.edu.upc.greeni.dtos.TipoInteraccionDTO;
@@ -21,6 +22,7 @@ public class TipoInteraccionController {
     @Autowired
     private ITipoInteraccionService service;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping
     public List<TipoInteraccionDTO> listar(){
         return service.listar().stream().map(y->{
@@ -29,6 +31,7 @@ public class TipoInteraccionController {
         }).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PostMapping
     public void insertar(@RequestBody TipoInteraccionDTO tdto) {
         ModelMapper mapper = new ModelMapper();
@@ -36,6 +39,7 @@ public class TipoInteraccionController {
         service.insert(t);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Tipo_Interaccion tipo = service.listId(id);
@@ -48,7 +52,7 @@ public class TipoInteraccionController {
         Tipo_Interaccion dto = m.map(tipo, Tipo_Interaccion.class);
         return ResponseEntity.ok(dto);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Tipo_Interaccion d = service.listId(id);
@@ -60,6 +64,7 @@ public class TipoInteraccionController {
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar( @RequestBody TipoInteraccionDTO dto) {
         ModelMapper m = new ModelMapper();

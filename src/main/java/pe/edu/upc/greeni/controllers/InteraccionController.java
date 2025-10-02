@@ -22,6 +22,7 @@ public class InteraccionController {
     @Autowired
     private IInteraccionService service;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping
     public List<InteraccionDTOList> listar(){
         return service.listar().stream().map(y->{
@@ -30,6 +31,7 @@ public class InteraccionController {
         }).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody InteraccionDTO idto) {
         ModelMapper mapper = new ModelMapper();
@@ -37,7 +39,7 @@ public class InteraccionController {
         service.insert(i);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @GetMapping("/{id}")
     public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
         Interaccion inte = service.listId(id);
@@ -51,7 +53,7 @@ public class InteraccionController {
         return ResponseEntity.ok(dto);
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarInteraccion(@PathVariable("id") Integer id) {
         Interaccion i = service.listId(id);

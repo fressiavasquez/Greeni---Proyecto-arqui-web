@@ -3,6 +3,7 @@ package pe.edu.upc.greeni.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="Planta")
@@ -27,10 +28,12 @@ public class Planta {
     @ManyToOne
     @JoinColumn(name="idUsuario", nullable = false)
     private Usuario usuario;
-
+    
     @ManyToOne
-    @JoinColumn(name = "id_diagnostico", nullable = false)
+    @JoinColumn(name="idDiagnostico")
     private Diagnostico diagnostico;
+
+
 
 
     public Planta() {

@@ -3,6 +3,7 @@ package pe.edu.upc.greeni.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "Diagnostico")
@@ -19,6 +20,11 @@ public class Diagnostico {
 
     @Column(name="fecha_dia", length = 100, nullable = false)
     private LocalDate fechadia;
+
+
+
+
+
 
     public Diagnostico(int idDiagnostico, int severidad, String acciones, LocalDate fechadia) {
         this.idDiagnostico = idDiagnostico;

@@ -79,12 +79,11 @@ public class UsuarioDTO {
         this.email = email;
     }
 
-    Rol getRol() {
+    public Rol getRol() {
         return rol;
     }
 
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-
 }

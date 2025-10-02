@@ -44,4 +44,6 @@ public class DiagnosticoServiceImplement implements IDiagnosticoService {
     public List<String[]> quantitySeveridadDiagnostico() {
         return diagnosticoRepository.quantitySeveridadDiagnostico();
     }
+
+
 }

@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.greeni.dtos.GuiaFavoritaDTO;
 import pe.edu.upc.greeni.entities.Guia;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class GuiaFavoritaController {
     @Autowired
     private IGuiaFavoritaService controller;
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping
     public List<GuiaFavoritaDTO> listar() {
         return controller.list().stream().map(gf -> {
@@ -30,7 +32,7 @@ public class GuiaFavoritaController {
             return dto;
         }).collect(Collectors.toList());
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @PostMapping
     public void insertar(@RequestBody GuiaFavoritaDTO sdto) {
         GuiaFavorita gf = new GuiaFavorita();
@@ -42,9 +44,7 @@ public class GuiaFavoritaController {
         gf.setGuia(g);
         controller.insert(gf);
     }
-
-
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         GuiaFavorita d = controller.listId(id);

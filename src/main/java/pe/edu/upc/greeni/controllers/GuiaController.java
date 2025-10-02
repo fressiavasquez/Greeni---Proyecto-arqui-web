@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class GuiaController {
     @Autowired
     private IGuiaService guiaService;
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PostMapping
     public void insertar(@RequestBody GuiaDTO sdto)
     {
@@ -29,6 +30,7 @@ public class GuiaController {
         guiaService.insert(s);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PLANTLOVER')")
     @GetMapping
     public List<GuiaDTOList> listar(){
         return guiaService.list().stream().map(y->{
@@ -37,6 +39,7 @@ public class GuiaController {
         }).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
         Guia d = guiaService.listId(id);
@@ -48,6 +51,7 @@ public class GuiaController {
         return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CIENTIFICO')")
     @PutMapping("/{id}")
     public ResponseEntity<String> modificar(@RequestBody GuiaDTO dto) {
         ModelMapper m = new ModelMapper();
