@@ -34,9 +34,11 @@ pe\edu\upc\greeni\dtos\CantidadRecordatorioPorEstadoDTO.class
 pe\edu\upc\greeni\servicesInterfaces\ITipoInteraccionService.class
 pe\edu\upc\greeni\dtos\MedicionDTOInsert.class
 pe\edu\upc\greeni\servicesImplements\TratamientoServiceImplement.class
+pe\edu\upc\greeni\securities\Swaggerconfig.class
 pe\edu\upc\greeni\dtos\VencimientoDTO.class
 pe\edu\upc\greeni\entities\Tipo_Interaccion.class
 pe\edu\upc\greeni\entities\EstadoRecordatorio.class
+pe\edu\upc\greeni\dtos\TipoGuiaDTO.class
 pe\edu\upc\greeni\entities\Rol.class
 pe\edu\upc\greeni\controllers\PlantaController.class
 pe\edu\upc\greeni\dtos\QuantityDTO.class
@@ -59,6 +61,7 @@ pe\edu\upc\greeni\controllers\MedicionController.class
 pe\edu\upc\greeni\servicesInterfaces\IUsuarioService.class
 pe\edu\upc\greeni\dtos\QuantityRecordatorioDTO.class
 pe\edu\upc\greeni\entities\Tratamiento.class
+pe\edu\upc\greeni\dtos\RecordatorioFiltroDTO.class
 pe\edu\upc\greeni\controllers\TipoInteraccionController.class
 pe\edu\upc\greeni\controllers\TratamientoController.class
 pe\edu\upc\greeni\dtos\UsuariosActivosMesDTO.class
@@ -76,6 +79,7 @@ pe\edu\upc\greeni\entities\Interaccion.class
 pe\edu\upc\greeni\repositories\IEstadoRecordatorioRepository.class
 pe\edu\upc\greeni\controllers\EstadoRecordatorioController.class
 pe\edu\upc\greeni\controllers\DiagnosticoController.class
+pe\edu\upc\greeni\dtos\TituloGuiaDTO.class
 pe\edu\upc\greeni\dtos\PlantaDTO.class
 pe\edu\upc\greeni\servicesImplements\EstadoRecordatorioImplement.class
 pe\edu\upc\greeni\dtos\UsuarioDTO.class
@@ -99,4 +103,6 @@ pe\edu\upc\greeni\servicesInterfaces\IEspecieService.class
 pe\edu\upc\greeni\controllers\RecordatorioController.class
 pe\edu\upc\greeni\repositories\IInteraccionRepository.class
 pe\edu\upc\greeni\dtos\EstadoRecordatorioDTOInsert.class
+pe\edu\upc\greeni\dtos\MedicionReporteListDTO.class
+pe\edu\upc\greeni\dtos\PlantaMaxDTO.class
 pe\edu\upc\greeni\servicesImplements\GuiaServiceImplement.class
