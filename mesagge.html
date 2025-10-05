@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="public/assets/img/logo-greeni.png">
+  <title>Mensajería - Greeni</title>
+
+  <!-- Estilos existentes del proyecto -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="public/assets/styles/main.css">
+  <link rel="stylesheet" href="public/assets/styles/sidebar.css">
+  <link rel="stylesheet" href="public/assets/styles/comunity.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="public/assets/styles/mesagge.css">
+
+<div class="app-layout">
+  <div id="sidebar-container"></div>
+
+  <div class="messenger-container">
+    <aside class="sidebar">
+      <h3>Chats</h3>
+      <div class="chat-list">
+        <div class="chat-list-item"
+             data-contact="Juan Pérez"
+             data-avatar="https://i.pravatar.cc/120?img=11"
+             data-status="Activo"
+             data-member="2024">Juan Pérez</div>
+
+        <div class="chat-list-item"
+             data-contact="Ana López"
+             data-avatar="https://i.pravatar.cc/120?img=12"
+             data-status="Activo"
+             data-member="2023">Ana López</div>
+
+        <div class="chat-list-item"
+             data-contact="Pedro Sánchez"
+             data-avatar="https://i.pravatar.cc/120?img=13"
+             data-status="Inactivo"
+             data-member="2022">Pedro Sánchez</div>
+
+        <div class="chat-list-item"
+             data-contact="Daniela Flores"
+             data-avatar="https://i.pravatar.cc/120?img=14"
+             data-status="Activo"
+             data-member="2024">Daniela Flores</div>
+
+        <div class="chat-list-item"
+             data-contact="Soporte Greeni"
+             data-avatar="public/assets/img/logo-greeni.png"
+             data-status="Activo"
+             data-member="2024">Soporte Greeni</div>
+      </div>
+    </aside>
+
+    <main class="chat-main">
+      <header class="chat-header">
+        <span id="contact-name">Nombre del contacto</span>
+        <button id="profile-btn">Perfil</button>
+      </header>
+
+      <section class="chat-messages" id="chat-messages"></section>
+
+      <footer class="chat-input">
+        <input type="text" id="message-input" placeholder="Escribe un mensaje..."/>
+        <button id="send-btn">Enviar</button>
+      </footer>
+    </main>
+
+<!-- === MODAL PERFIL CONTACTO (solo lectura) === -->
+<div class="contact-modal-overlay" id="contact-modal" aria-hidden="true">
+  <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-name">
+    <button class="contact-modal-close" id="contact-modal-close" aria-label="Cerrar">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="contact-modal-body">
+      <img id="contact-modal-avatar" class="contact-modal-avatar" alt="Avatar del contacto">
+      <h2 id="contact-modal-name" class="contact-modal-name">—</h2>
+
+      <div class="contact-modal-details">
+        <h3>Información del Chat</h3>
+        <p><strong>Usuario:</strong> <span id="modal-user">—</span></p>
+        <p><strong>Estado:</strong> <span id="modal-status">—</span></p>
+        <p><strong>Miembro desde:</strong> <span id="modal-member">—</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script general del proyecto -->
+<script src="public/assets/scripts/main.js" defer></script>
+
+<!-- LÓGICA del chat + modal (todo en el mismo archivo) -->
+<script>
+  const sendBtn = document.getElementById('send-btn');
+  const messageInput = document.getElementById('message-input');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatListItems = document.querySelectorAll('.chat-list-item');
+  const contactName = document.getElementById('contact-name');
+  const infoUser = document.getElementById('info-user');
+
+  // Modal
+  const profileBtn = document.getElementById('profile-btn');
+  const contactModal = document.getElementById('contact-modal');
+  const contactModalClose = document.getElementById('contact-modal-close');
+  const contactModalName = document.getElementById('contact-modal-name');
+  const contactModalAvatar = document.getElementById('contact-modal-avatar');
+  const modalUser   = document.getElementById('modal-user');
+  const modalStatus = document.getElementById('modal-status');
+  const modalMember = document.getElementById('modal-member');
+
+  // Conversaciones demo
+  const conversations = {
+    "Juan Pérez": [],
+    "Ana López": [],
+    "Pedro Sánchez": [],
+    "Daniela Flores": [],
+    "Soporte Greeni": []
+  };
+
+  // Estado actual
+  let currentContact = null;
+  let currentContactAvatar = null;
+  let currentContactStatus = "Activo";
+  let currentContactMember = "2024";
+
+  // Seleccionar contacto
+  chatListItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const contact = item.getAttribute('data-contact');
+      const avatar  = item.getAttribute('data-avatar') || 'https://i.pravatar.cc/120';
+      const status  = item.getAttribute('data-status') || 'Activo';
+      const member  = item.getAttribute('data-member') || '2024';
+
+      currentContact = contact;
+      currentContactAvatar = avatar;
+      currentContactStatus = status;
+      currentContactMember = member;
+
+      contactName.textContent = contact;
+      infoUser.textContent = "Usuario: " + contact;
+
+      loadConversation(contact);
+    });
+  });
+
+  function loadConversation(contact) {
+    chatMessages.innerHTML = '';
+    (conversations[contact] || []).forEach(msg => {
+      const div = document.createElement('div');
+      div.classList.add('message');
+      if (msg.sender === 'me') div.classList.add('sent');
+      div.textContent = msg.text;
+      chatMessages.appendChild(div);
+    });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Enviar mensaje
+  sendBtn.addEventListener('click', () => {
+    const text = messageInput.value.trim();
+    if (text !== '' && currentContact !== null) {
+      const msg = { sender: 'me', text };
+      if (!conversations[currentContact]) conversations[currentContact] = [];
+      conversations[currentContact].push(msg);
+
+      const div = document.createElement('div');
+      div.classList.add('message', 'sent');
+      div.textContent = text;
+      chatMessages.appendChild(div);
+
+      messageInput.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    } else if (currentContact === null) {
+      alert('Selecciona un contacto antes de enviar un mensaje.');
+    }
+  });
+
+  // Abrir modal Perfil (nombre + foto + info)
+  profileBtn.addEventListener('click', () => {
+    if (!currentContact) {
+      alert('Primero selecciona un contacto');
+      return;
+    }
+    contactModalName.textContent = currentContact;
+    contactModalAvatar.src = currentContactAvatar || 'https://i.pravatar.cc/120';
+    modalUser.textContent = currentContact;
+    modalStatus.textContent = currentContactStatus;
+    modalMember.textContent = currentContactMember;
+
+    contactModal.setAttribute('aria-hidden', 'false');
+    contactModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Cerrar modal (botón X o clic fuera)
+  function closeContactModal(){
+    contactModal.setAttribute('aria-hidden', 'true');
+    contactModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  contactModalClose.addEventListener('click', closeContactModal);
+  contactModal.addEventListener('click', e => {
+    if (e.target === contactModal) closeContactModal();
+  });
+</script>
+
+</body>
+</html>

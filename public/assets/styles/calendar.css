@@ -1,0 +1,174 @@
+/* ====== CALENDARIO (FullCalendar) ====== */
+#calendar-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+  padding: 16px;
+}
+
+/* Colores por tipo de recordatorio (aplica a los eventos del calendario) */
+.fc .event-riego { background:#4fc3f7; border-color:#4fc3f7; color:#0b2a3a; }
+.fc .event-poda { background:#ffcc80; border-color:#ffcc80; color:#5a3a06; }
+.fc .event-fertilizacion { background:#a5d6a7; border-color:#a5d6a7; color:#0f2d13; }
+.fc .event-otro { background:#e0e0e0; border-color:#e0e0e0; color:#222; }
+
+/* ====== PANEL LATERAL DEL DÍA ====== */
+#selected-day-label {
+  font-weight: 700;
+  color: #174d2d;
+  margin-bottom: 8px;
+}
+
+#day-events-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+/* Tarjeta de recordatorio en el panel */
+.day-event-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8faf9;
+  border: 1px solid #e6ece9;
+}
+
+.day-event-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.day-event-main .title {
+  font-weight: 600;
+  color: #1f1f1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-event-main i { color:#174d2d; opacity:.9; }
+
+/* Acciones editar / eliminar */
+.day-event-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-icon {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  color: #1f1f1f;
+}
+.btn-icon:hover { background: rgba(0,0,0,0.06); }
+
+/* Dar un sutil tinte según el tipo también en el panel */
+.day-event-item.event-riego { background:#e8f6fe; border-color:#caeafd; }
+.day-event-item.event-poda { background:#fff3e0; border-color:#ffe0b2; }
+.day-event-item.event-fertilizacion { background:#edf7ee; border-color:#cfe9d2; }
+.day-event-item.event-otro { background:#f2f2f2; border-color:#e0e0e0; }
+
+/* ====== MODAL ====== */
+#event-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+#event-modal.open { display: flex; }
+
+#event-modal .modal-card {
+  background: #fff;              /* Fondo blanco sólido */
+  width: min(520px, 92vw);
+  border-radius: 16px;
+  box-shadow: 0 16px 50px rgba(0,0,0,.25);
+  padding: 22px 24px 26px;
+  position: relative;
+  z-index: 1001;                 /* asegurarte que esté por encima */
+}
+
+
+#event-modal .modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 10px;
+}
+#event-modal .modal-title { font-weight: 700; font-size: 1.05rem; color:#1f1f1f; }
+#event-modal .close-x { border:none; background:transparent; font-size:20px; cursor:pointer; }
+
+
+#event-form {
+  display: grid;
+  gap: 10px;
+}
+#event-form .row { display:grid; gap:8px; }
+#event-form input, #event-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  outline: none;
+}
+#event-form .actions {
+  display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px;
+}
+#event-form .btn {
+  border:none; cursor:pointer; border-radius:10px; padding:10px 12px; font-weight:700;
+}
+#event-form .btn.secondary { background:#eef2ef; color:#174d2d; }
+#event-form .btn.primary   { background:#1f5a34; color:#fff; }
+#event-form .btn.primary:disabled { opacity:.6; cursor:not-allowed; }
+
+/* ==== FIX: modal visible con tarjeta blanca sólida ==== */
+
+/* Capa oscura detrás del modal */
+#event-modal.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.50);
+  display: none;                /* por defecto oculto */
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 2000;                /* por encima del calendario */
+}
+
+/* Mostrar cuando JS añade la clase .open */
+#event-modal.modal.open,
+.modal.open {
+  display: flex !important;
+}
+
+/* Tarjeta del modal: FONDO BLANCO */
+#event-modal .modal-content {
+  background: #ffffff !important;   /* <- aquí está la clave */
+  border-radius: 16px;
+  width: min(560px, 92vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 50px rgba(0,0,0,.35);
+  padding: 22px 24px 26px;
+  position: relative;
+  z-index: 2001;
+}
+
+/* (Opcional) Encabezado del modal */
+#event-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -6px 0 10px;
+}
