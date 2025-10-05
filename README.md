@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Greeni • Landing Page de Cuidado de Plantas
 <p align="center">
   <img src="public/assets/img/logo-greeni.png" alt="Greeni Logo" width="300" />
@@ -127,3 +128,7 @@ Este proyecto fue desarrollado por:
 * **Erick Pérez**
 * **Jhonatan Tasayco**
 * **Abraham Salazar**
+=======
+# Greeni-Proyecto-arqui-web
+Grupo 06
+>>>>>>> 1ae19652c441819359eefe9bc64ec98ab79b6e4f
